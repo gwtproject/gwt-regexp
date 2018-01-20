@@ -14,8 +14,8 @@
 
 <!-- regular expressions support.                                           -->
 <module>
-    <inherits name="com.google.gwt.core.Core" />
-    <source path="shared" />
-    <super-source path="super" />
-    <public path="public" />
+    <inherits name="com.google.gwt.core.Core"/>
+    <inherits name="elemental2.core.Core"/>
+    <source path="client"/>
+    <source path="shared"/>
 </module>

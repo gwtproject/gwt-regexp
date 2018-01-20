@@ -1,6 +1,15 @@
-package org.gwtproject.regexp.shared;
+package org.gwtproject.regexp.client;
 
-public interface MatchResult {
+import elemental2.core.JsArray;
+import org.gwtproject.regexp.shared.MatchResult;
+
+public class NativeMatchResult implements MatchResult {
+
+    private JsArray<String> array;
+
+    NativeMatchResult(JsArray<String> results) {
+        array = results;
+    }
 
     /**
      * Retrieves the matched string or the given matched group.
@@ -13,21 +22,33 @@ public interface MatchResult {
      * behavior is browser-dependent: this method will return {@code null}
      * or an empty string.
      */
-    String getGroup(int index);
+    @Override
+    public String getGroup(int index) {
+        return array.getAt(index);
+    }
 
     /**
      * Returns the number of groups, including the matched string hence greater or
      * equal than 1.
      */
-    int getGroupCount();
+    @Override
+    public int getGroupCount() {
+        return array.length;
+    }
 
     /**
      * Returns the zero-based index of the match in the input string.
      */
-    int getIndex();
+    @Override
+    public int getIndex() {
+        return array.index;
+    }
 
     /**
      * Returns the original input string.
      */
-    String getInput();
+    @Override
+    public String getInput() {
+        return array.input;
+    }
 }

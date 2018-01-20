@@ -17,9 +17,6 @@ package org.gwtproject.regexp.shared;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-import com.google.gwt.regexp.shared.MatchResult;
-import com.google.gwt.regexp.shared.RegExp;
-import com.google.gwt.regexp.shared.SplitResult;
 import org.gwtproject.testing.TestUtils;
 
 /**
@@ -135,13 +132,13 @@ public class RegExpTest extends GWTTestCase {
   public void testExec_controlCharacterInvalid() {
     // regExp = RegExp.compile("\\c5");
     // checkExecNoMatch("c5");
-    // DISCREPANCY: Java specificity: \c accepts any character; \cX is an alias 
+    // DISCREPANCY: Java specificity: \c accepts any character; \cX is an alias
     // for the character of code: asciiCode(X) ^ 64
     // checkExecNoMatch(allAsciiCharsBut(""));
     checkExecNoMatch(allAsciiCharsBut(Character.toString((char)('5' ^ 64)),
         255));
   }
-  
+
   public void testExec_controlCharacterValid() {
     regExp = RegExp.compile("\\cM");
     // DISCREPANCY: does not work on Development Mode
