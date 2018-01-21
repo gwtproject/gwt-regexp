@@ -2,7 +2,10 @@ package org.gwtproject.regexp.shared;
 
 import org.gwtproject.regexp.client.NativeRegExp;
 
-class NativeFactory extends RegExpFactory {
+/**
+ * RegExp factory to create native Javascript implementation
+ */
+class NativeRegExpFactory extends RegExpFactory {
 
     @Override
     RegExp compile(String pattern, String flags) {

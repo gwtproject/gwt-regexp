@@ -3,7 +3,10 @@ package org.gwtproject.regexp.shared;
 import com.google.gwt.core.shared.GwtIncompatible;
 import org.gwtproject.regexp.server.JavaRegExp;
 
-class JavaFactory extends RegExpFactory {
+/**
+ * RegExp factory to create Java implementation
+ */
+class JavaRegExpFactory extends RegExpFactory {
 
     @GwtIncompatible
     @Override

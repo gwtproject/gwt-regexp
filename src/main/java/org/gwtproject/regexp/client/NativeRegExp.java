@@ -22,8 +22,6 @@ import org.gwtproject.regexp.shared.MatchResult;
 import org.gwtproject.regexp.shared.RegExp;
 import org.gwtproject.regexp.shared.SplitResult;
 
-import java.util.logging.Logger;
-
 import static java.util.Objects.isNull;
 
 /**
@@ -41,8 +39,6 @@ import static java.util.Objects.isNull;
  * implementation, not the pure Java implementation, which rejects them.
  */
 public class NativeRegExp implements RegExp {
-
-    private static final Logger LOGGER = Logger.getLogger(NativeRegExp.class.getCanonicalName());
 
     /**
      * Creates a regular expression object from a pattern with no flags.
@@ -83,8 +79,7 @@ public class NativeRegExp implements RegExp {
      * @return A literal string replacement
      */
     public static String quote(String input) {
-        // /([.?*+^$[\]\\(){}|-])/g
-        return new JsString(input).replace("/([.?*+^$[\\]\\\\(){}|-])/g", "\\$1");
+        return new JsString(input).replace(new JsRegExp("([.?*+^$[\\]\\\\(){}|-])", "g"), "\\$1");
     }
 
     private JsRegExp jsRegExp;
@@ -103,187 +98,59 @@ public class NativeRegExp implements RegExp {
         jsRegExp.compile(pattern, flags);
     }
 
-    /**
-     * Applies the regular expression to the given string. This call affects the
-     * value returned by {@link #getLastIndex()} if the global flag is set.
-     *
-     * @param input the string to apply the regular expression to
-     * @return a match result if the string matches, else {@code null}
-     */
     @Override
     public MatchResult exec(String input) {
         String[] result = jsRegExp.exec(input);
         return isNull(result) ? null : new NativeMatchResult(Js.cast(result));
-    } /*-{
-     return this.exec(input);
-   }-*/
+    }
 
-    ;
-
-    /**
-     * Returns whether the regular expression captures all occurences of the
-     * pattern.
-     */
     @Override
     public boolean getGlobal() {
         return jsRegExp.global;
-    } /*-{
-    return this.global;
-  }-*/
+    }
 
-    ;
-
-    /**
-     * Returns whether the regular expression ignores case.
-     */
     @Override
     public boolean getIgnoreCase() {
         return jsRegExp.ignoreCase;
-    } /*-{
-    return this.ignoreCase;
-  }-*/
+    }
 
-    ;
-
-    /**
-     * Returns the zero-based position at which to start the next match. The
-     * return value is not defined if the global flag is not set. After a call
-     * to {@link #exec(String)} or {@link #test(String)}, this method returns
-     * the next position following the most recent match.
-     *
-     * @see #getGlobal()
-     */
     @Override
     public int getLastIndex() {
         return jsRegExp.lastIndex;
-    } /*-{
-     return this.lastIndex;
-   }-*/
+    }
 
-    ;
-
-    /**
-     * Returns whether '$' and '^' match line returns ('\n' and '\r') in addition
-     * to the beginning or end of the string.
-     */
     @Override
     public boolean getMultiline() {
         return jsRegExp.multiline;
-    } /*-{
-    return this.multiline;
-  }-*/
+    }
 
-    ;
-
-    /**
-     * Returns the pattern string of the regular expression.
-     */
     @Override
     public String getSource() {
         return jsRegExp.source;
-    } /*-{
-     return this.source;
-   }-*/
-
-    ;
-
-    /**
-     * Returns the input string with the part(s) matching the regular expression
-     * replaced with the replacement string. If the global flag is set, replaces
-     * all matches of the regular expression. Otherwise, replaces the first match
-     * of the regular expression. As per Javascript semantics, backslashes in the
-     * replacement string get no special treatment, but the replacement string can
-     * use the following special patterns:
-     * <ul>
-     * <li>$1, $2, ... $99 - inserts the n'th group matched by the regular
-     * expression.
-     * <li>$&amp; - inserts the entire string matched by the regular expression.
-     * <li>$$ - inserts a $.
-     * </ul>
-     *
-     * @param input       the string in which the regular expression is to be searched.
-     * @param replacement the replacement string.
-     * @return the input string with the regular expression replaced with the
-     * replacement string.
-     * @throws RuntimeException if {@code replacement} is invalid
-     */
-    @Override
-    public String replace(String input, String replacement) {
-        return new JsString(input).replace(jsRegExp, replacement);/*-{
-     return input.replace(this, replacement);
-   }-*/
     }
 
-    ;
+    @Override
+    public String replace(String input, String replacement) {
+        return new JsString(input).replace(jsRegExp, replacement);
+    }
 
-    /**
-     * Sets the zero-based position at which to start the next match.
-     */
     @Override
     public void setLastIndex(int lastIndex) {
         jsRegExp.lastIndex = lastIndex;
-        /*-{
-     this.lastIndex = lastIndex;
-   }-*/
     }
 
-    ;
-
-    /**
-     * Splits the input string around matches of the regular expression. If the
-     * regular expression is completely empty, splits the input string into its
-     * constituent characters. If the regular expression is not empty but matches
-     * an empty string, the results are not well defined.
-     *
-     * @param input the string to be split.
-     * @return the strings split off, any of which may be empty.
-     */
     @Override
     public SplitResult split(String input) {
         return new NativeSplitResult(Js.cast(new JsString(input).split(jsRegExp)));
-        /*-{
-     return input.split(this);
-   }-*/
     }
 
-    ;
-
-    /**
-     * Splits the input string around matches of the regular expression. If the
-     * regular expression is completely empty, splits the input string into its
-     * constituent characters. If the regular expression is not empty but matches
-     * an empty string, the results are not well defined.
-     *
-     * @param input the string to be split.
-     * @param limit the maximum number of strings to split off and return,
-     *              ignoring the rest of the input string. If negative, there is no
-     *              limit.
-     * @return the strings split off, any of which may be empty.
-     */
     @Override
     public SplitResult split(String input, int limit) {
         return new NativeSplitResult(Js.cast(new JsString(input).split(jsRegExp, limit)));
-        /*-{
-     return input.split(this, limit);
-   }-*/
     }
 
-    ;
-
-    /**
-     * Determines if the regular expression matches the given string. This call
-     * affects the value returned by {@link #getLastIndex()} if the global flag is
-     * not set. Equivalent to: {@code exec(input) != null}
-     *
-     * @param input the string to apply the regular expression to
-     * @return whether the regular expression matches the given string.
-     */
     @Override
     public boolean test(String input) {
-        return jsRegExp.test(input);/*-{
-     return this.test(input);
-   }-*/
+        return jsRegExp.test(input);
     }
-
-    ;
 }

@@ -56,9 +56,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <moduleName>org.gwtproject.regexp.RegExp</moduleName>
-                    <systemPropertyVariables>
-                        <gwt.args>-runStyle Manual:1</gwt.args>
-                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>

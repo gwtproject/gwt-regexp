@@ -2,8 +2,6 @@ package org.gwtproject.regexp.shared;
 
 import com.google.gwt.core.client.GWT;
 
-import java.util.logging.Logger;
-
 public interface RegExp {
 
     static boolean isJava() {
@@ -21,7 +19,7 @@ public interface RegExp {
      * @throws RuntimeException if the pattern is invalid
      */
     static RegExp compile(String pattern) {
-        return (isJava() ? new JavaFactory() : new NativeFactory()).compile(pattern);
+        return (isJava() ? new JavaRegExpFactory() : new NativeRegExpFactory()).compile(pattern);
     }
 
     /**
@@ -35,7 +33,7 @@ public interface RegExp {
      * @throws RuntimeException if the pattern or the flags are invalid
      */
     static RegExp compile(String pattern, String flags) {
-        return (isJava() ? new JavaFactory() : new NativeFactory()).compile(pattern, flags);
+        return (isJava() ? new JavaRegExpFactory() : new NativeRegExpFactory()).compile(pattern, flags);
     }
 
     /**
@@ -52,7 +50,7 @@ public interface RegExp {
      * @return A literal string replacement
      */
     static String quote(String input) {
-        return (isJava() ? new JavaFactory() : new NativeFactory()).quote(input);
+        return (isJava() ? new JavaRegExpFactory() : new NativeRegExpFactory()).quote(input);
     }
 
     /**

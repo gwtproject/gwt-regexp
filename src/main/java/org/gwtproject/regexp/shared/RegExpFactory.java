@@ -1,6 +1,10 @@
 package org.gwtproject.regexp.shared;
 
-public class RegExpFactory {
+
+/**
+ * Factory class for creating RegExp implementation depends on the scope of the execution whether client side or server side
+ */
+class RegExpFactory {
     RegExp compile(String pattern) {
         throw new UnsupportedOperationException();
     }

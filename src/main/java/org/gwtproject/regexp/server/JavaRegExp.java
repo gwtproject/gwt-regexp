@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,13 +153,6 @@ public class JavaRegExp implements RegExp {
         lastIndex = 0;
     }
 
-    /**
-     * Applies the regular expression to the given string. This call affects the
-     * value returned by {@link #getLastIndex()} if the global flag is set.
-     *
-     * @param input the string to apply the regular expression to
-     * @return a match result if the string matches, else {@code null}
-     */
     @Override
     public MatchResult exec(String input) {
         // Start the search at lastIndex if the global flag is true.
@@ -202,75 +194,31 @@ public class JavaRegExp implements RegExp {
         }
     }
 
-    /**
-     * Returns whether the regular expression captures all occurrences of the
-     * pattern.
-     */
     @Override
     public boolean getGlobal() {
         return globalFlag;
     }
 
-    /**
-     * Returns whether the regular expression ignores case.
-     */
     @Override
     public boolean getIgnoreCase() {
         return (pattern.flags() & Pattern.CASE_INSENSITIVE) != 0;
     }
 
-    /**
-     * Returns the zero-based position at which to start the next match. The
-     * return value is not defined if the global flag is not set. After a call
-     * to {@link #exec(String)} or {@link #test(String)}, this method returns
-     * the next position following the most recent match.
-     *
-     * @see #getGlobal()
-     */
     @Override
     public int getLastIndex() {
         return lastIndex;
     }
 
-    /**
-     * Returns whether '$' and '^' match line returns ('\n' and '\r') in addition
-     * to the beginning or end of the string.
-     */
     @Override
     public boolean getMultiline() {
         return (pattern.flags() & Pattern.MULTILINE) != 0;
     }
 
-    /**
-     * Returns the pattern string of the regular expression.
-     */
     @Override
     public String getSource() {
         return source;
     }
 
-    /**
-     * Returns the input string with the part(s) matching the regular expression
-     * replaced with the replacement string. If the global flag is set, replaces
-     * all matches of the regular expression. Otherwise, replaces the first match
-     * of the regular expression. As per Javascript semantics, backslashes in the
-     * replacement string get no special treatment, but the replacement string can
-     * use the following special patterns:
-     * <ul>
-     * <li>$1, $2, ... $99 - inserts the n'th group matched by the regular
-     * expression.
-     * <li>$&amp; - inserts the entire string matched by the regular expression.
-     * <li>$$ - inserts a $.
-     * </ul>
-     * Note: $` and $' are *not* supported in the pure Java implementation, and
-     * throw an exception.
-     *
-     * @param input       the string in which the regular expression is to be searched.
-     * @param replacement the replacement string.
-     * @return the input string with the regular expression replaced by the
-     * replacement string.
-     * @throws RuntimeException if {@code replacement} is invalid
-     */
     @Override
     public String replace(String input, String replacement) {
         // Replace \ in the replacement with \\ to escape it for Java replace.
@@ -297,44 +245,16 @@ public class JavaRegExp implements RegExp {
                 : pattern.matcher(input).replaceFirst(replacement);
     }
 
-    /**
-     * Sets the zero-based position at which to start the next match.
-     */
     @Override
     public void setLastIndex(int lastIndex) {
         this.lastIndex = lastIndex;
     }
 
-    /**
-     * Splits the input string around matches of the regular expression. If the
-     * regular expression is completely empty, splits the input string into its
-     * constituent characters. If the regular expression is not empty but matches
-     * an empty string, the results are not well defined.
-     *
-     * @param input the string to be split.
-     * @return the strings split off, any of which may be empty.
-     */
     @Override
     public SplitResult split(String input) {
         return split(input, -1);
     }
 
-    /**
-     * Splits the input string around matches of the regular expression. If the
-     * regular expression is completely empty, splits the input string into its
-     * constituent characters. If the regular expression is not empty but matches
-     * an empty string, the results are not well defined.
-     * <p>
-     * Note: There are some browser inconsistencies with this implementation, as
-     * it is delegated to the browser, and no browser follows the spec completely.
-     * A major difference is that IE will exclude empty strings in the result.
-     *
-     * @param input the string to be split.
-     * @param limit the maximum number of strings to split off and return,
-     *              ignoring the rest of the input string. If negative, there is no
-     *              limit.
-     * @return the strings split off, any of which may be empty.
-     */
     @Override
     public SplitResult split(String input, int limit) {
         String[] result;
@@ -364,14 +284,6 @@ public class JavaRegExp implements RegExp {
         return new JavaSplitResult(result);
     }
 
-    /**
-     * Determines if the regular expression matches the given string. This call
-     * affects the value returned by {@link #getLastIndex()} if the global flag is
-     * set. Equivalent to: {@code exec(input) != null}
-     *
-     * @param input the string to apply the regular expression to
-     * @return whether the regular expression matches the given string.
-     */
     @Override
     public boolean test(String input) {
         return exec(input) != null;
