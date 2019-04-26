@@ -1,15 +1,6 @@
 package org.gwtproject.regexp.shared;
 
-import com.google.gwt.core.client.GWT;
-
 public interface RegExp {
-
-    static boolean isJava() {
-//        String java = System.getProperty("gwt.mode", "java");
-//        LOGGER.info(java);
-//        return "java".equals(java);
-        return !GWT.isClient();
-    }
 
     /**
      * Creates a regular expression object from a pattern with no flags.
@@ -19,7 +10,7 @@ public interface RegExp {
      * @throws RuntimeException if the pattern is invalid
      */
     static RegExp compile(String pattern) {
-        return (isJava() ? new JavaRegExpFactory() : new NativeRegExpFactory()).compile(pattern);
+        return new JavaRegExpFactory().compile(pattern);
     }
 
     /**
@@ -33,7 +24,7 @@ public interface RegExp {
      * @throws RuntimeException if the pattern or the flags are invalid
      */
     static RegExp compile(String pattern, String flags) {
-        return (isJava() ? new JavaRegExpFactory() : new NativeRegExpFactory()).compile(pattern, flags);
+        return new JavaRegExpFactory().compile(pattern, flags);
     }
 
     /**
@@ -50,7 +41,7 @@ public interface RegExp {
      * @return A literal string replacement
      */
     static String quote(String input) {
-        return (isJava() ? new JavaRegExpFactory() : new NativeRegExpFactory()).quote(input);
+        return new JavaRegExpFactory().quote(input);
     }
 
     /**

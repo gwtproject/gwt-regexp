@@ -1,12 +1,11 @@
 package org.gwtproject.regexp.shared;
 
-import com.google.gwt.core.shared.GwtIncompatible;
 import org.gwtproject.regexp.server.JavaRegExp;
 
 /**
  * RegExp factory to create Java implementation
  */
-class JavaRegExpFactory extends RegExpFactory {
+class JavaRegExpFactory extends NativeRegExpFactory {
 
     @GwtIncompatible
     @Override

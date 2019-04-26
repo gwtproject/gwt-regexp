@@ -15,6 +15,7 @@
  */
 package org.gwtproject.regexp.server;
 
+import org.gwtproject.regexp.shared.GwtIncompatible;
 import org.gwtproject.regexp.shared.MatchResult;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * Pure Java implementation of a regular expression match result.
  */
+@GwtIncompatible
 public class JavaMatchResult implements MatchResult {
 
     private final List<String> groups;

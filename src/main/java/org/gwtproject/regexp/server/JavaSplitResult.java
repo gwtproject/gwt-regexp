@@ -15,11 +15,13 @@
  */
 package org.gwtproject.regexp.server;
 
+import org.gwtproject.regexp.shared.GwtIncompatible;
 import org.gwtproject.regexp.shared.SplitResult;
 
 /**
  * Pure Java implementation of a regular expression split result.
  */
+@GwtIncompatible
 public class JavaSplitResult implements SplitResult {
 
     private final String[] result;

@@ -1,5 +1,6 @@
 package org.gwtproject.regexp.server;
 
+import org.gwtproject.regexp.shared.GwtIncompatible;
 import org.gwtproject.regexp.shared.MatchResult;
 import org.gwtproject.regexp.shared.RegExp;
 import org.gwtproject.regexp.shared.SplitResult;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@GwtIncompatible
 public class JavaRegExp implements RegExp {
 
     // In JS syntax, a \ in the replacement string has no special meaning.
