@@ -18,7 +18,6 @@ package org.gwtproject.regexp.shared;
 import static junit.framework.TestCase.*;
 
 import com.google.j2cl.junit.apt.J2clTestInput;
-import org.gwtproject.testing.TestUtils;
 import org.junit.Test;
 
 /** Tests the J2CL implementation of RegExp. */
@@ -508,9 +507,7 @@ public class RegExpJ2clTest {
 
   @Test
   public void testExec_verticalTab() {
-    // TODO(rluble): implement Java 8 semantics for regexps. See issue 8912.
-    //    String expected = (!GWT.isClient() && TestUtils.getJdkVersion() > 7) ?
-    String expected = (TestUtils.getJdkVersion() > 7) ? "\u000b\n\f\r\u0085\u2028\u2029" : "\u000b";
+    String expected = "\u000b";
     checkAlias("\\v", expected);
   }
 
