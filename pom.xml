@@ -44,9 +44,9 @@
 
     <modules>
         <module>gwt-regexp</module>
-        <module>gwt2-tests</module>
-        <module>j2cl-tests</module>
-        <module>junit-tests</module>
+        <module>gwt-regexp-gwt2-tests</module>
+        <module>gwt-regexp-j2cl-tests</module>
+        <module>gwt-regexp-junit-tests</module>
     </modules>
 
     <properties>
