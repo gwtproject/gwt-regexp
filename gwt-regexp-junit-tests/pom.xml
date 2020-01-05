@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.gwtproject.regexp</groupId>
-    <artifactId>junit-tests</artifactId>
+    <artifactId>gwt-regexp-junit-tests</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
