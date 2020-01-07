@@ -84,7 +84,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <moduleName>org.gwtproject.regexp.RegExp</moduleName>
-                    <moduleShortName>gwtregexp</moduleShortName>
                 </configuration>
             </plugin>
             <plugin>

@@ -16,8 +16,4 @@
 <module>
     <!-- Other module inherits                                      -->
     <inherits name="elemental2.core.Core"/>
-
-    <!-- sources -->
-    <source path="client"/>
-    <source path="shared"/>
 </module>
