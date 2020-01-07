@@ -16,6 +16,9 @@
 package org.gwtproject.regexp.shared;
 
 import junit.framework.TestCase;
+import org.gwtproject.regexp.shared.MatchResult;
+import org.gwtproject.regexp.shared.RegExp;
+import org.gwtproject.regexp.shared.SplitResult;
 import org.gwtproject.testing.TestUtils;
 
 /** Tests the Java implementation of RegExp. */
