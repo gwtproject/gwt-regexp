@@ -9,8 +9,9 @@
     <packaging>gwt-lib</packaging>
 
     <name>GWT Regular Expression</name>
-    <description>TBD</description>
+    <description>GWT Regular Expression</description>
     <url>https://github.com/gwtproject/gwt-regexp</url>
+
     <organization>
         <name>The GWT Authors</name>
         <url>https://github.com/gwtproject</url>
@@ -49,6 +50,7 @@
         <maven.javadoc.plugin>3.1.1</maven.javadoc.plugin>
         <maven.licence.plugin>3.0</maven.licence.plugin>
         <maven.source.plugin>3.2.1</maven.source.plugin>
+        <maven.deploy.plugin>3.0.0-M1</maven.deploy.plugin>
 
         <elemental2.version>1.0.0-RC1</elemental2.version>
         <junit.version>4.12</junit.version>
@@ -118,6 +120,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven.deploy.plugin}</version>
             </plugin>
         </plugins>
     </build>
