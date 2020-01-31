@@ -15,12 +15,12 @@
     <url>https://github.com/gwtproject/gwt-regexp</url>
 
     <properties>
-        <maven.j2cl.plugin>0.11-SNAPSHOT</maven.j2cl.plugin>
+        <maven.j2cl.plugin>0.12-SNAPSHOT</maven.j2cl.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <!-- CI -->
         <vertispan.j2cl.repo.url>https://repo.vertispan.com/j2cl/</vertispan.j2cl.repo.url>
         <jsinterop.base.version>1.0.0-SNAPSHOT</jsinterop.base.version>
-        <j2cl.version>0.3-SNAPSHOT</j2cl.version>
+        <j2cl.version>0.6-SNAPSHOT</j2cl.version>
         <slf4j.version>1.7.5</slf4j.version>
     </properties>
 
