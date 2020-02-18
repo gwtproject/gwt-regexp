@@ -15,29 +15,15 @@
     <url>https://github.com/gwtproject/gwt-regexp</url>
 
     <properties>
-        <maven.j2cl.plugin>0.12-SNAPSHOT</maven.j2cl.plugin>
+        <maven.j2cl.plugin>0.13-SNAPSHOT</maven.j2cl.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <!-- CI -->
         <vertispan.j2cl.repo.url>https://repo.vertispan.com/j2cl/</vertispan.j2cl.repo.url>
-        <jsinterop.base.version>1.0.0-SNAPSHOT</jsinterop.base.version>
-        <j2cl.version>0.6-SNAPSHOT</j2cl.version>
+        <j2cl.version>0.7-SNAPSHOT</j2cl.version>
         <slf4j.version>1.7.5</slf4j.version>
     </properties>
 
     <dependencies>
-        <!-- As the other projects are gwt2, we need to explicitly depend on a j2cl-compatible version of jsinterop-base -->
-        <dependency>
-            <groupId>com.vertispan.jsinterop</groupId>
-            <artifactId>base</artifactId>
-            <version>${jsinterop.base.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
         <!-- test dependencies -->
         <dependency>
             <groupId>com.vertispan.j2cl</groupId>
@@ -47,21 +33,15 @@
         </dependency>
         <dependency>
             <groupId>com.vertispan.j2cl</groupId>
-            <artifactId>gwttestcase-emul</artifactId>
+            <artifactId>junit-emul</artifactId>
             <version>${j2cl.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vertispan.j2cl</groupId>
-            <artifactId>gwttestcase-emul</artifactId>
-            <version>${j2cl.version}</version>
-            <classifier>sources</classifier>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.vertispan.j2cl</groupId>
             <artifactId>junit-emul</artifactId>
             <version>${j2cl.version}</version>
+            <classifier>sources</classifier>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -77,22 +57,12 @@
                 <artifactId>j2cl-maven-plugin</artifactId>
                 <version>${maven.j2cl.plugin}</version>
                 <executions>
+                    <!-- to run this from command line, use mvn j2cl:test@j2cl-test -->
                     <execution>
                         <id>j2cl-test</id>
                         <goals>
                             <goal>test</goal>
                         </goals>
-                        <configuration>
-                            <defines>
-                                <gwt.enableDebugId>true</gwt.enableDebugId>
-                                <gwt.cspCompatModeEnabled>true</gwt.cspCompatModeEnabled>
-                                <gwt.strictCspTestingEnabled>true</gwt.strictCspTestingEnabled>
-                            </defines>
-                            <compilationLevel>BUNDLE</compilationLevel>
-                            <tests>
-                                <test>org.gwtproject.regexp.shared.RegExpJ2clTest</test>
-                            </tests>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -109,18 +79,8 @@
 
     <repositories>
         <repository>
-            <id>${vertispan.j2cl.repo.id}</id>
-            <name>${vertispan.j2cl.repo.name}</name>
-            <url>${vertispan.j2cl.repo.url}</url>
-        </repository>
-        <repository>
-            <id>vertispan-releases</id>
-            <name>Vertispan hosted artifacts-releases</name>
-            <url>${vertispan.j2cl.repo.url}</url>
-        </repository>
-        <repository>
             <id>vertispan-snapshots</id>
-            <name>Vertispan hosted artifacts-snapshots</name>
+            <name>Vertispan hosted artifacts-releases</name>
             <url>${vertispan.j2cl.repo.url}</url>
         </repository>
     </repositories>
