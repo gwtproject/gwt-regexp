@@ -12,3 +12,13 @@ Regular expression module for GWT 2 and J2CL.
     <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
+
+### Instructions
+To build gwt-timer:
+* run `mvn clean install`
+on the parent directory.
+
+To run the j2cl tests:
+* switch to the 'gwt-regexp-j2cl-tests' directory
+* run `mvn j2cl:clean` & `mvn j2cl:test`
+
