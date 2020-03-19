@@ -56,6 +56,9 @@
                 <groupId>com.vertispan.j2cl</groupId>
                 <artifactId>j2cl-maven-plugin</artifactId>
                 <version>${maven.j2cl.plugin}</version>
+                <configuration>
+                    <compilationLevel>ADVANCED</compilationLevel>
+                </configuration>
                 <executions>
                     <!-- to run this from command line, use mvn j2cl:test@j2cl-test -->
                     <execution>
