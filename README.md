@@ -14,7 +14,7 @@ Regular expression module for GWT 2 and J2CL.
 ```
 
 ### Instructions
-To build gwt-timer:
+To build gwt-regexp:
 
 * run `mvn clean install`
 
