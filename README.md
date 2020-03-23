@@ -1,6 +1,6 @@
 ![GWT3/J2CL compatible](https://img.shields.io/badge/GWT3/J2CL-compatible-brightgreen.svg)
 
-# GWT Callbacks
+# GWT RegExp
 Regular expression module for GWT 2 and J2CL.
 
 ### Dependency
