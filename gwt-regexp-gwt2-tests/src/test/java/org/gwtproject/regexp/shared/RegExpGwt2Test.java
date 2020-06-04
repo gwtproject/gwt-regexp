@@ -26,35 +26,27 @@ public class RegExpGwt2Test extends GWTTestCase {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
   private static final String NOT_SPACE_CHARACTERS = allAsciiCharsBut(" \f\n\r\t\u000b\u00a0", 255);
   private static final String SPACE_CHARACTERS = " \f\n\r\t\u000b";
+  private RegExp regExp;
 
   @Override
   public String getModuleName() {
     return "org.gwtproject.regexp.RegExpGwt2TestModule";
   }
 
-  /**
-   * Generates a string containing all characters up to the given limit but the characters in the
-   * given string.
-   *
-   * @param exclude the characters not to return
-   * @param limit the last character to include, typically 127 or 255
-   * @return an ASCII string
-   */
-  private static String allAsciiCharsBut(String exclude, int limit) {
-    StringBuilder sb = new StringBuilder();
-    // DISCREPANCY: character 0 is handled differently by Webkit
-    for (char c = 1; c <= limit; c++) {
-      if (!exclude.contains(String.valueOf(c))) {
-        sb.append(c);
-      }
-    }
-    return sb.toString();
-  }
-
-  private RegExp regExp;
-
   public void testCompile_duplicatedFlags() {
     checkCompileThrows("regexp", "igg", true);
+  }
+
+  private void checkCompileThrows(String regexp, String flags, boolean onlyPureJava) {
+    boolean thrown = false;
+    try {
+      RegExp.compile(regexp, flags);
+    } catch (RuntimeException e) {
+      thrown = true;
+    }
+    if (!onlyPureJava || !GWT.isClient()) {
+      assertTrue(thrown);
+    }
   }
 
   public void testCompile_unknownFlags() {
@@ -67,6 +59,41 @@ public class RegExpGwt2Test extends GWTTestCase {
     checkExecNoMatch("_aa_");
     checkExec("_aaa_", 1, "aaa");
     checkExec("_aaaab_", 1, "aaaa");
+  }
+
+  private void checkExecNoMatch(String input) {
+    checkExecNoMatch(input, 0);
+  }
+
+  private void checkExec(String input, int expectedIndex, String... expectedGroups) {
+    checkExec(input, expectedIndex, -1, expectedGroups);
+  }
+
+  private void checkExecNoMatch(String input, int expectedLastIndex) {
+    MatchResult matchResult = regExp.exec(input);
+    assertNull(matchResult);
+    assertEquals("Wrong last index", expectedLastIndex, regExp.getLastIndex());
+  }
+
+  private void checkExec(
+      String input, int expectedIndex, int expectedLastIndex, String... expectedGroups) {
+    MatchResult matchResult = regExp.exec(input);
+    assertNotNull("Match expected", matchResult);
+    assertEquals("Wrong result input", input, matchResult.getInput());
+    assertEquals("Wrong result index", expectedIndex, matchResult.getIndex());
+    if (expectedLastIndex >= 0) {
+      assertEquals("Wrong last index", expectedLastIndex, regExp.getLastIndex());
+    }
+    assertEquals("Wrong group count", expectedGroups.length, matchResult.getGroupCount());
+    for (int group = 0; group < expectedGroups.length; group++) {
+      String expectedGroup = expectedGroups[group];
+      String actualGroup = matchResult.getGroup(group);
+      if (expectedGroup == null && "".equals(actualGroup)) {
+        // IE sets non-matching groups to "" instead of null.
+      } else {
+        assertEquals("Wrong group " + group, expectedGroup, actualGroup);
+      }
+    }
   }
 
   /** Checks that backreferences with two digits are accepted. */
@@ -99,31 +126,6 @@ public class RegExpGwt2Test extends GWTTestCase {
     checkExecNoMatch("_aXa,aXa-a_");
   }
 
-  public void testExec_backreferenceOne() {
-    regExp = RegExp.compile("([ab])X\\1");
-    checkExec("_aXa_", 1, "aXa", "a");
-    checkExec("_bXb_", 1, "bXb", "b");
-    checkExecNoMatch("_aXb_");
-  }
-
-  public void testExec_carriageReturn() {
-    checkAlias("\\r", "\r");
-  }
-
-  public void testExec_characterSetList() {
-    regExp = RegExp.compile("[ace]");
-    checkExec("abcde", 0, "a");
-    checkExec("XXcYY", 2, "c");
-    checkExecNoMatch("bdf");
-  }
-
-  public void testExec_characterSetRange() {
-    regExp = RegExp.compile("[a-ce-z]");
-    checkExec("abcde", 0, "a");
-    checkExec("XXcYY", 2, "c");
-    checkExecNoMatch("XXdYY");
-  }
-
   // DISCREPANCY: chrome does not support \cX
   /*
   public void testExec_controlCharacterInvalid() {
@@ -144,6 +146,79 @@ public class RegExpGwt2Test extends GWTTestCase {
   }
   */
 
+  public void testExec_backreferenceOne() {
+    regExp = RegExp.compile("([ab])X\\1");
+    checkExec("_aXa_", 1, "aXa", "a");
+    checkExec("_bXb_", 1, "bXb", "b");
+    checkExecNoMatch("_aXb_");
+  }
+
+  public void testExec_carriageReturn() {
+    checkAlias("\\r", "\r");
+  }
+
+  /**
+   * Checks that a regular expression matches all characters of a string and no other.
+   *
+   * @param regexp the regular expression
+   * @param matched all ASCII characters the regexp must exactly match, on all browsers and in Java
+   */
+  private void checkAlias(String regexp, String matched) {
+    checkAlias(regexp, matched, allAsciiCharsBut(matched, 255));
+  }
+
+  /**
+   * Checks that a regular expression matches all characters of a string and none of another.
+   *
+   * <p>
+   *
+   * <p>In theory {@code matched} and {@code notMatched} should be the same. In practice,
+   * discrepancies of regular expressions implementation across browsers and in Java force to ignore
+   * some characters. This leads {@code matched} to be a subset of {@code notMatched}.
+   *
+   * @param regexp the regular expression
+   * @param matched all characters the regexp must match, on all browsers and in Java
+   * @param notMatched all characters the regexp must not match, on all browsers and in Java
+   */
+  private void checkAlias(String regexp, String matched, String notMatched) {
+    regExp = RegExp.compile(regexp + "+");
+    checkExec(matched, 0, matched);
+    checkExecNoMatch(notMatched);
+  }
+
+  /**
+   * Generates a string containing all characters up to the given limit but the characters in the
+   * given string.
+   *
+   * @param exclude the characters not to return
+   * @param limit the last character to include, typically 127 or 255
+   * @return an ASCII string
+   */
+  private static String allAsciiCharsBut(String exclude, int limit) {
+    StringBuilder sb = new StringBuilder();
+    // DISCREPANCY: character 0 is handled differently by Webkit
+    for (char c = 1; c <= limit; c++) {
+      if (!exclude.contains(String.valueOf(c))) {
+        sb.append(c);
+      }
+    }
+    return sb.toString();
+  }
+
+  public void testExec_characterSetList() {
+    regExp = RegExp.compile("[ace]");
+    checkExec("abcde", 0, "a");
+    checkExec("XXcYY", 2, "c");
+    checkExecNoMatch("bdf");
+  }
+
+  public void testExec_characterSetRange() {
+    regExp = RegExp.compile("[a-ce-z]");
+    checkExec("abcde", 0, "a");
+    checkExec("XXcYY", 2, "c");
+    checkExecNoMatch("XXdYY");
+  }
+
   public void testExec_digit() {
     checkAlias("\\d", "0123456789");
   }
@@ -159,6 +234,16 @@ public class RegExpGwt2Test extends GWTTestCase {
 
   public void testExec_dotMultiLine() {
     testExec_dot("m");
+  }
+
+  private void testExec_dot(String flags) {
+    regExp = RegExp.compile("a.c", flags);
+    checkExecNoMatch("ac");
+    checkExec("abc", 0, "abc");
+    checkExecNoMatch("a\nc");
+    // DISCREPANCY: Firefox bug: '.' should not match '\r'
+    // checkExec("a\rc", 0, "a\rc");
+    checkExecNoMatch("a\r\nc");
   }
 
   public void testExec_dotSingleLine() {
@@ -523,6 +608,12 @@ public class RegExpGwt2Test extends GWTTestCase {
     checkReplace("Abc", "\\x", "\\xbc");
   }
 
+  private void checkReplace(String input, String replacement, String expected) {
+    String result = regExp.replace(input, replacement);
+    assertNotNull("Replace result expected", result);
+    assertEquals("Wrong replace result", expected, result);
+  }
+
   public void testReplace_dollarReplacement() {
     regExp = RegExp.compile("A+");
     checkReplace("the A stops here", "$$", "the $ stops here");
@@ -624,6 +715,18 @@ public class RegExpGwt2Test extends GWTTestCase {
     checkReplace("foo", " $$'", " $'");
   }
 
+  private void checkReplaceThrows(String input, String replacement, boolean onlyPureJava) {
+    boolean thrown = false;
+    try {
+      regExp.replace(input, replacement);
+    } catch (RuntimeException e) {
+      thrown = true;
+    }
+    if (!onlyPureJava || !GWT.isClient()) {
+      assertTrue(thrown);
+    }
+  }
+
   public void testSetLastIndex() {
     regExp = RegExp.compile("test");
     regExp.setLastIndex(3);
@@ -633,6 +736,22 @@ public class RegExpGwt2Test extends GWTTestCase {
   public void testSplit_emptyInput() {
     regExp = RegExp.compile(",");
     checkSplit("", "");
+  }
+
+  private void checkSplit(String input, String... expectedParts) {
+    SplitResult splitResult = regExp.split(input);
+    checkSplit(splitResult, expectedParts);
+  }
+
+  private void checkSplit(SplitResult splitResult, String[] expectedParts) {
+    assertNotNull("Split result expected", splitResult);
+    assertEquals("Wrong result length", expectedParts.length, splitResult.length());
+    for (int i = 0; i < expectedParts.length; i++) {
+      String expectedPart = expectedParts[i];
+      String actualPart = splitResult.get(i);
+      assertNotNull("Split part expected", actualPart);
+      assertEquals("Wrong split part " + i, expectedPart, actualPart);
+    }
   }
 
   public void testSplit_emptyParts() {
@@ -649,6 +768,11 @@ public class RegExpGwt2Test extends GWTTestCase {
   public void testSplit_emptySeparatorExactLimit() {
     regExp = RegExp.compile("");
     checkSplit("ab", 2, "a", "b");
+  }
+
+  private void checkSplit(String input, int limit, String... expectedParts) {
+    SplitResult splitResult = regExp.split(input, limit);
+    checkSplit(splitResult, expectedParts);
   }
 
   public void testSplit_emptySeparatorHighLimit() {
@@ -722,130 +846,5 @@ public class RegExpGwt2Test extends GWTTestCase {
   public void testIssue02() {
     String input = "[a-z][a-z0-9]*";
     assertTrue(RegExp.compile(RegExp.quote(input), "i").test(input));
-  }
-
-  /**
-   * Checks that a regular expression matches all characters of a string and no other.
-   *
-   * @param regexp the regular expression
-   * @param matched all ASCII characters the regexp must exactly match, on all browsers and in Java
-   */
-  private void checkAlias(String regexp, String matched) {
-    checkAlias(regexp, matched, allAsciiCharsBut(matched, 255));
-  }
-
-  /**
-   * Checks that a regular expression matches all characters of a string and none of another.
-   *
-   * <p>
-   *
-   * <p>In theory {@code matched} and {@code notMatched} should be the same. In practice,
-   * discrepancies of regular expressions implementation across browsers and in Java force to ignore
-   * some characters. This leads {@code matched} to be a subset of {@code notMatched}.
-   *
-   * @param regexp the regular expression
-   * @param matched all characters the regexp must match, on all browsers and in Java
-   * @param notMatched all characters the regexp must not match, on all browsers and in Java
-   */
-  private void checkAlias(String regexp, String matched, String notMatched) {
-    regExp = RegExp.compile(regexp + "+");
-    checkExec(matched, 0, matched);
-    checkExecNoMatch(notMatched);
-  }
-
-  private void checkCompileThrows(String regexp, String flags, boolean onlyPureJava) {
-    boolean thrown = false;
-    try {
-      RegExp.compile(regexp, flags);
-    } catch (RuntimeException e) {
-      thrown = true;
-    }
-    if (!onlyPureJava || !GWT.isClient()) {
-      assertTrue(thrown);
-    }
-  }
-
-  private void checkExec(
-      String input, int expectedIndex, int expectedLastIndex, String... expectedGroups) {
-    MatchResult matchResult = regExp.exec(input);
-    assertNotNull("Match expected", matchResult);
-    assertEquals("Wrong result input", input, matchResult.getInput());
-    assertEquals("Wrong result index", expectedIndex, matchResult.getIndex());
-    if (expectedLastIndex >= 0) {
-      assertEquals("Wrong last index", expectedLastIndex, regExp.getLastIndex());
-    }
-    assertEquals("Wrong group count", expectedGroups.length, matchResult.getGroupCount());
-    for (int group = 0; group < expectedGroups.length; group++) {
-      String expectedGroup = expectedGroups[group];
-      String actualGroup = matchResult.getGroup(group);
-      if (expectedGroup == null && "".equals(actualGroup)) {
-        // IE sets non-matching groups to "" instead of null.
-      } else {
-        assertEquals("Wrong group " + group, expectedGroup, actualGroup);
-      }
-    }
-  }
-
-  private void checkExec(String input, int expectedIndex, String... expectedGroups) {
-    checkExec(input, expectedIndex, -1, expectedGroups);
-  }
-
-  private void checkExecNoMatch(String input) {
-    checkExecNoMatch(input, 0);
-  }
-
-  private void checkExecNoMatch(String input, int expectedLastIndex) {
-    MatchResult matchResult = regExp.exec(input);
-    assertNull(matchResult);
-    assertEquals("Wrong last index", expectedLastIndex, regExp.getLastIndex());
-  }
-
-  private void checkReplace(String input, String replacement, String expected) {
-    String result = regExp.replace(input, replacement);
-    assertNotNull("Replace result expected", result);
-    assertEquals("Wrong replace result", expected, result);
-  }
-
-  private void checkReplaceThrows(String input, String replacement, boolean onlyPureJava) {
-    boolean thrown = false;
-    try {
-      regExp.replace(input, replacement);
-    } catch (RuntimeException e) {
-      thrown = true;
-    }
-    if (!onlyPureJava || !GWT.isClient()) {
-      assertTrue(thrown);
-    }
-  }
-
-  private void checkSplit(SplitResult splitResult, String[] expectedParts) {
-    assertNotNull("Split result expected", splitResult);
-    assertEquals("Wrong result length", expectedParts.length, splitResult.length());
-    for (int i = 0; i < expectedParts.length; i++) {
-      String expectedPart = expectedParts[i];
-      String actualPart = splitResult.get(i);
-      assertNotNull("Split part expected", actualPart);
-      assertEquals("Wrong split part " + i, expectedPart, actualPart);
-    }
-  }
-
-  private void checkSplit(String input, int limit, String... expectedParts) {
-    SplitResult splitResult = regExp.split(input, limit);
-    checkSplit(splitResult, expectedParts);
-  }
-
-  private void checkSplit(String input, String... expectedParts) {
-    SplitResult splitResult = regExp.split(input);
-    checkSplit(splitResult, expectedParts);
-  }
-
-  private void testExec_dot(String flags) {
-    regExp = RegExp.compile("a.c", flags);
-    checkExecNoMatch("ac");
-    checkExec("abc", 0, "abc");
-    checkExecNoMatch("a\nc");
-    // DISCREPANCY: Firefox bug: '.' should not match '\r'
-    // checkExec("a\rc", 0, "a\rc");
-    checkExecNoMatch("a\r\nc");
   }
 }

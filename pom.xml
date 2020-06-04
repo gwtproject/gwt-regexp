@@ -1,125 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.gwtproject.regexp</groupId>
-    <artifactId>gwt-regexp-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+  <groupId>org.gwtproject.regexp</groupId>
+  <artifactId>gwt-regexp-parent</artifactId>
 
-    <name>GWT RegExp Parent</name>
-    <description>Parent POM containing the gwt-regexp module and the test modules (gwt2-, junit- and j2cl-tests)
-    </description>
-    <url>https://github.com/gwtproject/gwt-regexp</url>
+  <version>${revision}</version>
 
-    <organization>
-        <name>The GWT Authors</name>
-        <url>https://github.com/gwtproject</url>
-    </organization>
+  <packaging>pom</packaging>
 
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
+  <name>GWT Regular Expression Parent</name>
+  <description>Parent POM containing the gwt-regexp module and the test modules (gwt2-, junit- and j2cl-tests)
+  </description>
+  <url>https://github.com/gwtproject/gwt-regexp</url>
 
-    <developers>
-        <developer>
-            <name>The GWT Authors</name>
-            <organization>The GWT Project Authors</organization>
-            <url>https://github.com/gwtproject</url>
-        </developer>
-    </developers>
+  <organization>
+    <name>The GWT Authors</name>
+    <url>https://github.com/gwtproject</url>
+  </organization>
 
-    <scm>
-        <connection>scm:git:git://github.com/gwtproject/gwt-regexp.git</connection>
-        <developerConnection>scm:git:ssh://github.com/gwtproject/gwt-regexp.git</developerConnection>
-        <url>https://github.com/gwtproject/gwt-regexp/tree/master</url>
-    </scm>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
 
-    <inceptionYear>2019</inceptionYear>
+  <developers>
+    <developer>
+      <name>The GWT Authors</name>
+      <organization>The GWT Project Authors</organization>
+      <url>https://github.com/gwtproject</url>
+    </developer>
+  </developers>
 
-    <modules>
-        <module>gwt-regexp</module>
-        <module>gwt-regexp-gwt2-tests</module>
-        <module>gwt-regexp-j2cl-tests</module>
-    </modules>
+  <scm>
+    <connection>scm:git:git://github.com/gwtproject/gwt-regexp.git</connection>
+    <developerConnection>scm:git:ssh://github.com/gwtproject/gwt-regexp.git</developerConnection>
+    <url>https://github.com/gwtproject/gwt-regexp/tree/master</url>
+  </scm>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+  <inceptionYear>2019</inceptionYear>
 
-        <maven.deploy.plugin>3.0.0-M1</maven.deploy.plugin>
-        <maven.fmt.plugin>2.5.1</maven.fmt.plugin>
-        <maven.licence.plugin>3.0</maven.licence.plugin>
+  <modules>
+    <module>gwt-regexp</module>
+    <module>gwt-regexp-gwt2-tests</module>
+    <module>gwt-regexp-j2cl-tests</module>
+  </modules>
 
-    </properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.gwtproject.regexp</groupId>
-            <artifactId>gwt-regexp</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.coveo</groupId>
-                <artifactId>fmt-maven-plugin</artifactId>
-                <version>${maven.fmt.plugin}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven.deploy.plugin}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>${maven.licence.plugin}</version>
-                    <configuration>
-                        <header>LICENSE.header</header>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                        <skipExistingHeaders>true</skipExistingHeaders>
-                        <mapping>
-                            <java>SLASHSTAR_STYLE</java>
-                        </mapping>
-                        <includes>
-                            <include>sec/test/java</include>
-                        </includes>
-                        <properties>
-                            <year>${project.inceptionYear}</year>
-                            <name>${project.organization.name}</name>
-                        </properties>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+    <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+    <maven.deploy.plugin>3.0.0-M1</maven.deploy.plugin>
+    <maven.fmt.plugin>2.9</maven.fmt.plugin>
+    <maven.install.plugin>3.0.0-M1</maven.install.plugin>
+    <maven.license.plugin>3.0</maven.license.plugin>
+    <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.gwtproject.regexp</groupId>
+      <artifactId>gwt-regexp</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.coveo</groupId>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <version>${maven.fmt.plugin}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven.deploy.plugin}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>${maven.license.plugin}</version>
+          <configuration>
+            <header>LICENSE.header</header>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <skipExistingHeaders>true</skipExistingHeaders>
+            <mapping>
+              <java>SLASHSTAR_STYLE</java>
+            </mapping>
+            <includes>
+              <include>sec/test/java</include>
+            </includes>
+            <properties>
+              <year>${project.inceptionYear}</year>
+              <name>${project.organization.name}</name>
+            </properties>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>

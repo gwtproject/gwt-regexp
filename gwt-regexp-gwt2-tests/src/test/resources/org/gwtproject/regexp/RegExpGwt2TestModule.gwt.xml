@@ -15,8 +15,8 @@
 <module>
   <!-- Other module inherits                                      -->
   <inherits name="org.gwtproject.regexp.RegExp"/>
-  <inherits name='org.gwtproject.testing.TestUtils' />
+  <inherits name='org.gwtproject.testing.TestUtils'/>
 
   <!-- sources -->
-  <source path="shared" />
+  <source path="shared"/>
 </module>

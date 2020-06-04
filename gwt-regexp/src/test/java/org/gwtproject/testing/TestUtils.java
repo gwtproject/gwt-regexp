@@ -18,6 +18,10 @@ package org.gwtproject.testing;
 /** Utility functions needed by various tests. */
 public class TestUtils {
 
+  public static boolean isJvm() {
+    return getJdkVersion() != -1;
+  }
+
   public static int getJdkVersion() {
     String versionString = System.getProperty("java.version", "none");
     if (versionString.equals("none")) {
@@ -25,10 +29,6 @@ public class TestUtils {
     }
 
     return getMajorVersion(versionString);
-  }
-
-  public static boolean isJvm() {
-    return getJdkVersion() != -1;
   }
 
   private static int getMajorVersion(String versionString) {

@@ -22,14 +22,14 @@ class JavaRegExpFactory extends NativeRegExpFactory {
 
   @GwtIncompatible
   @Override
-  RegExp compile(String pattern) {
-    return JavaRegExp.compile(pattern);
+  RegExp compile(String pattern, String flags) {
+    return JavaRegExp.compile(pattern, flags);
   }
 
   @GwtIncompatible
   @Override
-  RegExp compile(String pattern, String flags) {
-    return JavaRegExp.compile(pattern, flags);
+  RegExp compile(String pattern) {
+    return JavaRegExp.compile(pattern);
   }
 
   @GwtIncompatible

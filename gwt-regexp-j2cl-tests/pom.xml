@@ -1,98 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.gwtproject.regexp</groupId>
-        <artifactId>gwt-regexp-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>gwt-regexp-j2cl-tests</artifactId>
+  <parent>
+    <groupId>org.gwtproject.regexp</groupId>
+    <artifactId>gwt-regexp-parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>gwt-regexp-j2cl-tests</artifactId>
 
-    <name>GWT Regular Expression J2CL Tests</name>
-    <description>Test cases for the J2Cl tests</description>
-    <url>https://github.com/gwtproject/gwt-regexp</url>
+  <name>GWT Regular Expression J2CL Tests</name>
+  <description>Test cases for the J2Cl tests</description>
+  <url>https://github.com/gwtproject/gwt-regexp</url>
 
-    <properties>
-        <maven.j2cl.plugin>0.13-SNAPSHOT</maven.j2cl.plugin>
-        <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
-        <!-- CI -->
-        <vertispan.j2cl.repo.url>https://repo.vertispan.com/j2cl/</vertispan.j2cl.repo.url>
-        <j2cl.version>0.7-SNAPSHOT</j2cl.version>
-        <slf4j.version>1.7.5</slf4j.version>
-    </properties>
+  <properties>
+    <maven.j2cl.plugin>0.15-SNAPSHOT</maven.j2cl.plugin>
 
-    <dependencies>
-        <!-- test dependencies -->
-        <dependency>
-            <groupId>com.vertispan.j2cl</groupId>
-            <artifactId>junit-annotations</artifactId>
-            <version>${j2cl.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vertispan.j2cl</groupId>
-            <artifactId>junit-emul</artifactId>
-            <version>${j2cl.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.vertispan.j2cl</groupId>
-            <artifactId>junit-emul</artifactId>
-            <version>${j2cl.version}</version>
-            <classifier>sources</classifier>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <!-- CI -->
+    <vertispan.j2cl.repo.url>https://repo.vertispan.com/j2cl/</vertispan.j2cl.repo.url>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.vertispan.j2cl</groupId>
-                <artifactId>j2cl-maven-plugin</artifactId>
-                <version>${maven.j2cl.plugin}</version>
-                <configuration>
-                    <compilationLevel>ADVANCED</compilationLevel>
-                </configuration>
-                <executions>
-                    <!-- to run this from command line, use mvn j2cl:test@j2cl-test -->
-                    <execution>
-                        <id>j2cl-test</id>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surfire.plugin}</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <j2cl.version>0.7-SNAPSHOT</j2cl.version>
+  </properties>
 
-    <repositories>
-        <repository>
-            <id>vertispan-snapshots</id>
-            <name>Vertispan hosted artifacts-releases</name>
-            <url>${vertispan.j2cl.repo.url}</url>
-        </repository>
-    </repositories>
+  <dependencies>
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>com.vertispan.j2cl</groupId>
+      <artifactId>junit-annotations</artifactId>
+      <version>${j2cl.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vertispan.j2cl</groupId>
+      <artifactId>junit-emul</artifactId>
+      <version>${j2cl.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vertispan.j2cl</groupId>
+      <artifactId>junit-emul</artifactId>
+      <version>${j2cl.version}</version>
+      <classifier>sources</classifier>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>vertispan-releases</id>
-            <name>Vertispan hosted artifacts-releases</name>
-            <url>${vertispan.j2cl.repo.url}</url>
-        </pluginRepository>
-    </pluginRepositories>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mycila</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>${maven.license.plugin}</version>
+      </plugin>
+      <plugin>
+        <groupId>com.vertispan.j2cl</groupId>
+        <artifactId>j2cl-maven-plugin</artifactId>
+        <version>${maven.j2cl.plugin}</version>
+        <configuration>
+          <compilationLevel>ADVANCED</compilationLevel>
+          <testJsZip>com.vertispan.j2cl:closure-test:zip:jszip:0.7-20200424.004055-5</testJsZip>
+        </configuration>
+        <executions>
+          <!-- to run this from command line, use mvn j2cl:test@j2cl-test -->
+          <execution>
+            <id>j2cl-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surfire.plugin}</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven.install.plugin}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven.deploy.plugin}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>vertispan-snapshots</id>
+      <name>Vertispan hosted artifacts-releases</name>
+      <url>${vertispan.j2cl.repo.url}</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>vertispan-releases</id>
+      <name>Vertispan hosted artifacts-releases</name>
+      <url>${vertispan.j2cl.repo.url}</url>
+    </pluginRepository>
+  </pluginRepositories>
 </project>

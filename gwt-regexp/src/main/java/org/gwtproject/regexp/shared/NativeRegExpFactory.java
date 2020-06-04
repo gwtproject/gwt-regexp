@@ -21,13 +21,13 @@ import org.gwtproject.regexp.client.NativeRegExp;
 class NativeRegExpFactory extends RegExpFactory {
 
   @Override
-  RegExp compile(String pattern, String flags) {
-    return NativeRegExp.compile(pattern, flags);
+  RegExp compile(String pattern) {
+    return NativeRegExp.compile(pattern);
   }
 
   @Override
-  RegExp compile(String pattern) {
-    return NativeRegExp.compile(pattern);
+  RegExp compile(String pattern, String flags) {
+    return NativeRegExp.compile(pattern, flags);
   }
 
   @Override

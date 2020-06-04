@@ -20,6 +20,7 @@ package org.gwtproject.regexp.shared;
  * client side or server side
  */
 class RegExpFactory {
+
   RegExp compile(String pattern) {
     throw new UnsupportedOperationException();
   }
