@@ -50,7 +50,7 @@ To run the j2cl tests:
 * switch to the 'gwt-regexp-j2cl-tests' directory
 * run `mvn j2cl:clean` & `mvn j2cl:test`
 
-**Note: To build the module you need Maven 3.6.2 or newer**
+**Note: To build the module you need Maven 3.6.3 or newer**
 
 ## System Requirements
 
