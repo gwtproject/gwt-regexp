@@ -228,3 +228,7 @@ war/
 
 # target folder
 */target/*
+/gwt-regexp/.flattened-pom.xml
+/gwt-regexp-gwt2-tests/.flattened-pom.xml
+/gwt-regexp-j2cl-tests/.flattened-pom.xml
+/.flattened-pom.xml
