@@ -34,23 +34,16 @@ A future-proof port of the `com.google.gwt.regexp.RegExp` GWT module, with no de
 3. Change the `import`s in your Java source files:
 
    ```java
-   import org.gwtproject.timer.client.Timer;
+   import org.gwtproject.regexp.shared.RegExp;
    ```
 
 ## Instructions
 
 To build gwt-regexp:
 
-* run `mvn clean install`
+* run `mvn clean verify`
 
-on the parent directory.
-
-To run the j2cl tests:
-
-* switch to the 'gwt-regexp-j2cl-tests' directory
-* run `mvn j2cl:clean` & `mvn j2cl:test`
-
-**Note: To build the module you need Maven 3.6.3 or newer**
+on the parent directory. This will build the artifact and run tests against the JVM, J2CL, and GWT2.
 
 ## System Requirements
 
