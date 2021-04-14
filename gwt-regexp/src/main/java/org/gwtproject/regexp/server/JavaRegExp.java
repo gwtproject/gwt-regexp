@@ -134,7 +134,7 @@ public class JavaRegExp implements RegExp {
    * @throws IllegalArgumentException if a flag is duplicated
    */
   private static Set<Character> parseFlags(String flags) {
-    Set<Character> flagsSet = new HashSet<Character>(flags.length());
+    Set<Character> flagsSet = new HashSet<>(flags.length());
     for (int flagIndex = 0; flagIndex < flags.length(); flagIndex++) {
       char flag = flags.charAt(flagIndex);
       if (!flagsSet.add(flag)) {
@@ -179,7 +179,7 @@ public class JavaRegExp implements RegExp {
 
       // Retrieve the matched groups.
       int groupCount = matcher.groupCount();
-      List<String> groups = new ArrayList<String>(1 + groupCount);
+      List<String> groups = new ArrayList<>(1 + groupCount);
       for (int group = 0; group <= groupCount; group++) {
         groups.add(matcher.group(group));
       }
