@@ -42,7 +42,7 @@ public class NativeRegExp implements RegExp {
 
   private NativeRegExp(String pattern) {
     this();
-    jsRegExp.compile(pattern);
+    jsRegExp = new JsRegExp(pattern);
   }
 
   private NativeRegExp() {
@@ -51,7 +51,7 @@ public class NativeRegExp implements RegExp {
 
   private NativeRegExp(String pattern, String flags) {
     this();
-    jsRegExp.compile(pattern, flags);
+    jsRegExp = new JsRegExp(pattern, flags);
   }
 
   /**
